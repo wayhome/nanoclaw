@@ -66,7 +66,7 @@ async function runTask(task: ScheduledTask, deps: SchedulerDependencies): Promis
       prompt: task.prompt,
       sessionId,
       groupFolder: task.group_folder,
-      chatJid: task.chat_jid,
+      chatId: task.chat_id,
       isMain,
       isScheduledTask: true
     });

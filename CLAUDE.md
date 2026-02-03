@@ -4,18 +4,25 @@ Personal Claude assistant. See [README.md](README.md) for philosophy and setup. 
 
 ## Quick Context
 
-Single Node.js process that connects to WhatsApp, routes messages to Claude Agent SDK running in Apple Container (Linux VMs). Each group has isolated filesystem and memory.
+Single Node.js process that connects to Telegram, routes messages to Claude Agent SDK running in Apple Container (Linux VMs). Each group has isolated filesystem and memory.
+
+**Key Features:**
+- Simple trigger pattern: responds to `@AssistantName` (e.g., `@Andy`)
+- Continuous typing indicator during processing (auto-refreshes every 4 seconds)
+- Group-based isolation with separate settings and memory
+- Scheduled tasks with cron/interval/once support
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
-| `src/index.ts` | Main app: WhatsApp connection, message routing, IPC |
+| `src/index.ts` | Main app: Telegram connection, message routing, IPC, typing indicator |
 | `src/config.ts` | Trigger pattern, paths, intervals |
 | `src/container-runner.ts` | Spawns agent containers with mounts |
 | `src/task-scheduler.ts` | Runs scheduled tasks |
 | `src/db.ts` | SQLite operations |
 | `groups/{name}/CLAUDE.md` | Per-group memory (isolated) |
+| `groups/{name}/.claude/settings.json` | Per-group Claude API settings (required) |
 
 ## Skills
 

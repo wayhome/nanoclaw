@@ -39,7 +39,7 @@ export interface ContainerInput {
   prompt: string;
   sessionId?: string;
   groupFolder: string;
-  chatJid: string;
+  chatId: string;
   isMain: boolean;
   isScheduledTask?: boolean;
 }
@@ -408,7 +408,7 @@ export function writeTasksSnapshot(
 }
 
 export interface AvailableGroup {
-  jid: string;
+  chatId: string;
   name: string;
   lastActivity: string;
   isRegistered: boolean;

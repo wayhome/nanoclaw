@@ -42,9 +42,10 @@ Then run `/setup`. Claude Code handles everything: dependencies, authentication,
 
 ## What It Supports
 
-- **WhatsApp I/O** - Message Claude from your phone
+- **Telegram I/O** - Message Claude from your phone or desktop
+- **Continuous typing indicator** - Shows "typing..." throughout processing (auto-refreshes every 4s)
 - **Isolated group context** - Each group has its own `CLAUDE.md` memory, isolated filesystem, and runs in its own container sandbox with only that filesystem mounted
-- **Main channel** - Your private channel (self-chat) for admin control; every other group is completely isolated
+- **Main channel** - Your private channel for admin control; every other group is completely isolated
 - **Scheduled tasks** - Recurring jobs that run Claude and can message you back
 - **Web access** - Search and fetch content
 - **Container isolation** - Agents sandboxed in Apple containers
@@ -84,16 +85,16 @@ The codebase is small enough that Claude can safely modify it.
 
 **Don't add features. Add skills.**
 
-If you want to add Telegram support, don't create a PR that adds Telegram alongside WhatsApp. Instead, contribute a skill file (`.claude/skills/add-telegram/SKILL.md`) that teaches Claude Code how to transform a NanoClaw installation to use Telegram.
+If you want to add WhatsApp support, don't create a PR that adds WhatsApp alongside Telegram. Instead, contribute a skill file (`.claude/skills/add-whatsapp/SKILL.md`) that teaches Claude Code how to transform a NanoClaw installation to use WhatsApp.
 
-Users then run `/add-telegram` on their fork and get clean code that does exactly what they need, not a bloated system trying to support every use case.
+Users then run `/add-whatsapp` on their fork and get clean code that does exactly what they need, not a bloated system trying to support every use case.
 
 ### RFS (Request for Skills)
 
 Skills we'd love to see:
 
 **Communication Channels**
-- `/add-telegram` - Add Telegram as channel. Should give the user option to replace WhatsApp or add as additional channel. Also should be possible to add it as a control channel (where it can trigger actions) or just a channel that can be used in actions triggered elsewhere
+- `/add-whatsapp` - Add WhatsApp as channel (using Baileys library)
 - `/add-slack` - Add Slack
 - `/add-discord` - Add Discord
 
@@ -113,23 +114,24 @@ Skills we'd love to see:
 ## Architecture
 
 ```
-WhatsApp (baileys) --> SQLite --> Polling loop --> Container (Claude Agent SDK) --> Response
+Telegram (grammy) --> SQLite --> Polling loop --> Container (Claude Agent SDK) --> Response
 ```
 
 Single Node.js process. Agents execute in isolated Linux containers with mounted directories. IPC via filesystem. No daemons, no queues, no complexity.
 
 Key files:
-- `src/index.ts` - Main app: WhatsApp connection, routing, IPC
+- `src/index.ts` - Main app: Telegram connection, routing, IPC, typing indicator
 - `src/container-runner.ts` - Spawns agent containers
 - `src/task-scheduler.ts` - Runs scheduled tasks
 - `src/db.ts` - SQLite operations
 - `groups/*/CLAUDE.md` - Per-group memory
+- `groups/*/.claude/settings.json` - Per-group Claude API settings
 
 ## FAQ
 
-**Why WhatsApp and not Telegram/Signal/etc?**
+**Why Telegram and not WhatsApp/Signal/etc?**
 
-Because I use WhatsApp. Fork it and run a skill to change it. That's the whole point.
+This fork uses Telegram. The original NanoClaw used WhatsApp. Fork it and modify it to use whatever messaging platform you prefer. That's the whole point.
 
 **Why Apple Container instead of Docker?**
 
