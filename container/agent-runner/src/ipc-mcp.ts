@@ -14,7 +14,7 @@ const MESSAGES_DIR = path.join(IPC_DIR, 'messages');
 const TASKS_DIR = path.join(IPC_DIR, 'tasks');
 
 export interface IpcMcpContext {
-  chatJid: string;
+  chatId: string;
   groupFolder: string;
   isMain: boolean;
 }
@@ -34,7 +34,7 @@ function writeIpcFile(dir: string, data: object): string {
 }
 
 export function createIpcMcp(ctx: IpcMcpContext) {
-  const { chatJid, groupFolder, isMain } = ctx;
+  const { chatId, groupFolder, isMain } = ctx;
 
   return createSdkMcpServer({
     name: 'nanoclaw',
@@ -42,14 +42,14 @@ export function createIpcMcp(ctx: IpcMcpContext) {
     tools: [
       tool(
         'send_message',
-        'Send a message to the current WhatsApp group. Use this to proactively share information or updates.',
+        'Send a message to the current Telegram group. Use this to proactively share information or updates.',
         {
           text: z.string().describe('The message text to send')
         },
         async (args) => {
           const data = {
             type: 'message',
-            chatJid,
+            chatId,
             text: args.text,
             groupFolder,
             timestamp: new Date().toISOString()
@@ -130,7 +130,7 @@ SCHEDULE VALUE FORMAT (all times are LOCAL timezone):
             schedule_value: args.schedule_value,
             context_mode: args.context_mode || 'group',
             groupFolder: targetGroup,
-            chatJid,
+            chatId,
             createdBy: groupFolder,
             timestamp: new Date().toISOString()
           };

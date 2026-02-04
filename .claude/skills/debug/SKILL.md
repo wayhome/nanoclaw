@@ -182,7 +182,7 @@ mkdir -p data/env groups/test
 cp .env data/env/env
 
 # Run test query
-echo '{"prompt":"What is 2+2?","groupFolder":"test","chatJid":"test@g.us","isMain":false}' | \
+echo '{"prompt":"What is 2+2?","groupFolder":"test","chatId":"test@g.us","isMain":false}' | \
   container run -i \
   --mount "type=bind,source=$(pwd)/data/env,target=/workspace/env-dir,readonly" \
   -v $(pwd)/groups/test:/workspace/group \

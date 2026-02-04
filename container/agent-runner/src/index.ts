@@ -12,7 +12,7 @@ interface ContainerInput {
   prompt: string;
   sessionId?: string;
   groupFolder: string;
-  chatJid: string;
+  chatId: string;
   isMain: boolean;
   isScheduledTask?: boolean;
 }
@@ -217,7 +217,7 @@ async function main(): Promise<void> {
   }
 
   const ipcMcp = createIpcMcp({
-    chatJid: input.chatJid,
+    chatId: input.chatId,
     groupFolder: input.groupFolder,
     isMain: input.isMain
   });

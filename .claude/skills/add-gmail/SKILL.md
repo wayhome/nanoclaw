@@ -567,7 +567,7 @@ async function runEmailAgent(
     prompt,
     sessionId: sessions[groupFolder],
     groupFolder,
-    chatJid: `email:${email.from}`,  // Use email: prefix for JID
+    chatId: `email:${email.from}`,  // Use email: prefix for chat ID
     isMain: false,
     isScheduledTask: false
   });
